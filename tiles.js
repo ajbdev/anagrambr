@@ -1,3 +1,15 @@
+class Tile {
+    constructor(letter, x, y, player) {
+        this.letter = letter;
+        this.x = x;
+        this.y = y;
+        this.player = player;
+        this.committed = false;
+    }
+}
+
+class SelectTileError extends Error {}
+
 class Tiles {
     constructor() {
         this.tiles = {
@@ -29,6 +41,15 @@ class Tiles {
         };
 
         this.distribution = Object.keys(this.tiles).map((letter) => letter).join('');
+    }
+
+    select(player, letter, x, y) {
+        
+        if (player.tiles.indexOf(letter) === -1) {
+           throw new SelectTileError('Player does not have this letter');
+        }  
+
+        return new Tile(letter, player, x, y);
     }
 
     draw(amount = 1) {
